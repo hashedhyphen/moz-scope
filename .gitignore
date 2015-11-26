@@ -1,0 +1,4 @@
+*.eslintrc
+*.bin
+node_modules/
+legacy/
