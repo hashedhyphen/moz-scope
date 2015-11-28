@@ -12,8 +12,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* eslint-disable arrow-parens */
-
 var Lexer = (function () {
   function Lexer() {
     _classCallCheck(this, Lexer);
@@ -26,75 +24,28 @@ var Lexer = (function () {
         var _this = this;
 
         var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(resolve, reject) {
-          var revision;
+          var revision, date, author, comment;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  _context.prev = 0;
-                  _context.next = 3;
-                  return Lexer.extractLatestRevision(body);
+                  try {
+                    revision = extractLatestRevision(body), date = extractDate(revision), author = extractAuthor(revision), comment = extractComment(revision);
 
-                case 3:
-                  revision = _context.sent;
+                    resolve({ date: date, author: author, comment: comment });
+                  } catch (err) {
+                    reject(err);
+                  }
 
-                  resolve(list);
-                  _context.next = 10;
-                  break;
-
-                case 7:
-                  _context.prev = 7;
-                  _context.t0 = _context['catch'](0);
-                  reject(_context.t0);
-                case 10:
+                case 1:
                 case 'end':
                   return _context.stop();
               }
             }
-          }, _callee, _this, [[0, 7]]);
+          }, _callee, _this);
         }));
 
         return function (_x, _x2) {
-          return ref.apply(this, arguments);
-        };
-      })());
-    }
-  }, {
-    key: 'extractLatestRevision',
-    value: function extractLatestRevision(html) {
-      return new Promise((function () {
-        var _this2 = this;
-
-        var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(resolve, reject) {
-          var ul_regex, li_regex, ul, list;
-          return regeneratorRuntime.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  ul_regex = /<ul class="revision-list">[\s\S]+?<\/ul>/;
-                  li_regex = /<li>[\s\S]+?<\/li>/;
-                  _context2.next = 4;
-                  return ul_regex.exec(html)[0];
-
-                case 4:
-                  ul = _context2.sent;
-                  _context2.next = 7;
-                  return li_regex.exec(ul)[0];
-
-                case 7:
-                  list = _context2.sent;
-
-                  list ? resolve(list) : reject('missing revision-list');
-
-                case 9:
-                case 'end':
-                  return _context2.stop();
-              }
-            }
-          }, _callee2, _this2);
-        }));
-
-        return function (_x3, _x4) {
           return ref.apply(this, arguments);
         };
       })());
@@ -105,3 +56,55 @@ var Lexer = (function () {
 })();
 
 exports.default = Lexer;
+
+function extractLatestRevision(html) {
+  try {
+    var ul_regex = /<ul class="revision-list">[\s\S]+?<\/ul>/,
+        li_regex = /<li>[\s\S]+?<\/li>/,
+        ul = ul_regex.exec(html)[0],
+        list = li_regex.exec(ul)[0];
+
+    return list;
+  } catch (err) {
+    console.error('error on revision-list');
+    throw err;
+  }
+}
+
+function extractDate(revision) {
+  try {
+    var date_regex = /<time[\s\S]+?>([\s\S]+?)<\/time>/,
+        _date = date_regex.exec(revision)[1];
+
+    return new Date(_date);
+  } catch (err) {
+    console.error('error on date');
+    throw err;
+  }
+}
+
+function extractAuthor(revision) {
+  try {
+    var div_regex = /<div[\s\S]+?creator">([\s\S]+?)<\/div>/,
+        author_regex = /<a[\s\S]+?>([\s\S]+?)<\/a>/,
+        anchor = div_regex.exec(revision)[1],
+        _author = author_regex.exec(anchor)[1];
+
+    return _author;
+  } catch (err) {
+    console.error('error on author');
+    throw err;
+  }
+}
+
+function extractComment(revision) {
+  try {
+    var comment_regex = /<div[\s\S]+?comment">([\s\S]*?)<\/div>/,
+        _comment = comment_regex.exec(revision)[1];
+
+    return _comment.trim();
+  } catch (err) {
+    console.error('error on comment');
+    throw err;
+  }
+}
