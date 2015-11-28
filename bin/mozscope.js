@@ -84,7 +84,7 @@ var readConfig = function readConfig() {
         console.error('Error: failed to read config.json');
         reject(err);
       } else {
-        resolve(JSON.parse(buf.toString('ascii')));
+        resolve(JSON.parse(buf.toString('utf8')));
       }
     });
   });

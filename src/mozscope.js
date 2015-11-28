@@ -14,19 +14,19 @@ export default class MozScope {
     try {
       let config = await readConfig();
       console.log(config);
-    } catch (e) { console.error(e); }
+    } catch (err) { console.error(err); }
   }
 }
 
-let readConfig= () => {
-  let config_path = `./test/config.json`;
+const readConfig= () => {
+  const config_path = `./test/config.json`;
   return new Promise((resolve, reject) => {
     fs.readFile(config_path, (err, buf) => {
       if (err) {
         console.error(`Error: failed to read config.json`);
         reject(err);
       } else {
-        resolve(JSON.parse(buf.toString(`ascii`)));
+        resolve(JSON.parse(buf.toString(`utf8`)));
       }
     });
   });

@@ -20,27 +20,32 @@ var Request = (function () {
   }
 
   _createClass(Request, null, [{
-    key: 'queryPage',
-    value: function queryPage(url) {
-      var origin = 'https://developer.mozilla.org';
+    key: 'fetch',
+    value: function fetch(url) {
+      var origin = 'https://developer.mozilla.org',
+          suffix = '$history';
 
       return new Promise(function (resolve, reject) {
         try {
           if (!url.startsWith(origin)) {
-            throw 'URL\'s origin is invalid';
+            throw 'URL\'s origin is invalid: ' + url;
           }
 
+          if (!url.endsWith(suffix)) {
+            url += suffix;
+          }
           _https2.default.get(url, function (res) {
             if (res.statusCode !== 200) {
-              throw 'Got non-200 status code: ' + res.statusCode;
+              throw 'Got a non-200 status code: ' + res.statusCode;
             }
 
+            var body = '';
             res.setEncoding('utf8');
             res.on('data', function (chunk) {
-              return console.log(chunk);
+              return body += chunk;
             });
             res.on('end', function () {
-              return resolve();
+              return resolve(body);
             });
           }).on('error', function (err) {
             throw err;
