@@ -12,6 +12,10 @@ var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
 
+var _converter = require('./converter.js');
+
+var _converter2 = _interopRequireDefault(_converter);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, "next"); var callThrow = step.bind(null, "throw"); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
@@ -32,7 +36,7 @@ var MozScope = (function () {
     key: 'queryUpdates',
     value: (function () {
       var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        var config;
+        var config, updates;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -43,21 +47,26 @@ var MozScope = (function () {
 
               case 3:
                 config = _context.sent;
+                _context.next = 6;
+                return _converter2.default.exec(config);
 
-                console.log(config);
-                _context.next = 10;
+              case 6:
+                updates = _context.sent;
+
+                console.log(updates);
+                _context.next = 13;
                 break;
 
-              case 7:
-                _context.prev = 7;
+              case 10:
+                _context.prev = 10;
                 _context.t0 = _context['catch'](0);
                 console.error(_context.t0);
-              case 10:
+              case 13:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 7]]);
+        }, _callee, this, [[0, 10]]);
       }));
 
       return function queryUpdates() {

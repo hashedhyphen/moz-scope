@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import fs from 'fs';
+import Converter from './converter.js';
 
 export default class MozScope {
   static get VERSION() {
@@ -12,13 +13,14 @@ export default class MozScope {
 
   static async queryUpdates() {
     try {
-      let config = await readConfig();
-      console.log(config);
+      const config  = await readConfig();
+      const updates = await Converter.exec(config);
+      console.log(updates);
     } catch (err) { console.error(err); }
   }
 }
 
-const readConfig= () => {
+const readConfig = () => {
   const config_path = `./test/config.json`;
   return new Promise((resolve, reject) => {
     fs.readFile(config_path, (err, buf) => {

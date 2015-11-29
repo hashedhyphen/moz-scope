@@ -2,7 +2,7 @@ import 'babel-polyfill';
 
 export default class Lexer {
   static exec(body) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       try {
         const revision = extractLatestRevision(body)
             , date     = extractDate(revision)

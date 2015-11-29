@@ -8,8 +8,6 @@ Object.defineProperty(exports, "__esModule", {
 
 require('babel-polyfill');
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, "next"); var callThrow = step.bind(null, "throw"); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Lexer = (function () {
@@ -20,35 +18,18 @@ var Lexer = (function () {
   _createClass(Lexer, null, [{
     key: 'exec',
     value: function exec(body) {
-      return new Promise((function () {
-        var _this = this;
+      return new Promise(function (resolve, reject) {
+        try {
+          var revision = extractLatestRevision(body),
+              date = extractDate(revision),
+              author = extractAuthor(revision),
+              comment = extractComment(revision);
 
-        var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(resolve, reject) {
-          var revision, date, author, comment;
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  try {
-                    revision = extractLatestRevision(body), date = extractDate(revision), author = extractAuthor(revision), comment = extractComment(revision);
-
-                    resolve({ date: date, author: author, comment: comment });
-                  } catch (err) {
-                    reject(err);
-                  }
-
-                case 1:
-                case 'end':
-                  return _context.stop();
-              }
-            }
-          }, _callee, _this);
-        }));
-
-        return function (_x, _x2) {
-          return ref.apply(this, arguments);
-        };
-      })());
+          resolve({ date: date, author: author, comment: comment });
+        } catch (err) {
+          reject(err);
+        }
+      });
     }
   }]);
 
@@ -74,9 +55,9 @@ function extractLatestRevision(html) {
 function extractDate(revision) {
   try {
     var date_regex = /<time[\s\S]+?>([\s\S]+?)<\/time>/,
-        _date = date_regex.exec(revision)[1];
+        date = date_regex.exec(revision)[1];
 
-    return new Date(_date);
+    return new Date(date);
   } catch (err) {
     console.error('error on date');
     throw err;
@@ -88,9 +69,9 @@ function extractAuthor(revision) {
     var div_regex = /<div[\s\S]+?creator">([\s\S]+?)<\/div>/,
         author_regex = /<a[\s\S]+?>([\s\S]+?)<\/a>/,
         anchor = div_regex.exec(revision)[1],
-        _author = author_regex.exec(anchor)[1];
+        author = author_regex.exec(anchor)[1];
 
-    return _author;
+    return author;
   } catch (err) {
     console.error('error on author');
     throw err;
@@ -100,9 +81,9 @@ function extractAuthor(revision) {
 function extractComment(revision) {
   try {
     var comment_regex = /<div[\s\S]+?comment">([\s\S]*?)<\/div>/,
-        _comment = comment_regex.exec(revision)[1];
+        comment = comment_regex.exec(revision)[1];
 
-    return _comment.trim();
+    return comment.trim();
   } catch (err) {
     console.error('error on comment');
     throw err;

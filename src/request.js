@@ -12,6 +12,7 @@ export default class Request {
         }
 
         if (!url.endsWith(suffix)) { url += suffix; }
+        console.log(`requesting... ${url}`);
         https.get(url, (res) => {
           if (res.statusCode !== 200) {
             throw `Got a non-200 status code: ${res.statusCode}`;
