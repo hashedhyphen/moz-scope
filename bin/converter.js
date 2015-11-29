@@ -30,108 +30,81 @@ var Converter = (function () {
   _createClass(Converter, null, [{
     key: 'exec',
     value: (function () {
-      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(config) {
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(config) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                return _context2.abrupt('return', new Promise((function () {
-                  var _this = this;
+                return _context3.abrupt('return', new Promise((function () {
+                  var _this2 = this;
 
-                  var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(resolve, reject) {
-                    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, url, body, info;
-
-                    return regeneratorRuntime.wrap(function _callee$(_context) {
+                  var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(resolve, reject) {
+                    var updates;
+                    return regeneratorRuntime.wrap(function _callee2$(_context2) {
                       while (1) {
-                        switch (_context.prev = _context.next) {
+                        switch (_context2.prev = _context2.next) {
                           case 0:
-                            _context.prev = 0;
-                            _iteratorNormalCompletion = true;
-                            _didIteratorError = false;
-                            _iteratorError = undefined;
-                            _context.prev = 4;
-                            _iterator = Object.keys(config)[Symbol.iterator]();
+                            _context2.prev = 0;
+                            _context2.next = 3;
+                            return Promise.all(Object.keys(config).map(function (url) {
+                              return new Promise((function () {
+                                var _this = this;
 
-                          case 6:
-                            if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                              _context.next = 20;
-                              break;
-                            }
+                                var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(resolve, reject) {
+                                  var body;
+                                  return regeneratorRuntime.wrap(function _callee$(_context) {
+                                    while (1) {
+                                      switch (_context.prev = _context.next) {
+                                        case 0:
+                                          _context.prev = 0;
+                                          _context.next = 3;
+                                          return _request2.default.fetch(url);
 
-                            url = _step.value;
-                            _context.next = 10;
-                            return _request2.default.fetch(url);
+                                        case 3:
+                                          body = _context.sent;
 
-                          case 10:
-                            body = _context.sent;
+                                          resolve(_lexer2.default.exec(body));
+                                          _context.next = 10;
+                                          break;
 
-                            console.log(body);
-                            console.log(url + ' length: ' + body.length);
-                            _context.next = 15;
-                            return _lexer2.default.exec(body);
+                                        case 7:
+                                          _context.prev = 7;
+                                          _context.t0 = _context['catch'](0);
+                                          reject(_context.t0);
+                                        case 10:
+                                        case 'end':
+                                          return _context.stop();
+                                      }
+                                    }
+                                  }, _callee, _this, [[0, 7]]);
+                                }));
 
-                          case 15:
-                            info = _context.sent;
+                                return function (_x4, _x5) {
+                                  return ref.apply(this, arguments);
+                                };
+                              })());
+                            }));
 
-                            console.log(info);
+                          case 3:
+                            updates = _context2.sent;
 
-                          case 17:
-                            _iteratorNormalCompletion = true;
-                            _context.next = 6;
+                            resolve(updates);
+                            _context2.next = 11;
                             break;
 
-                          case 20:
-                            _context.next = 26;
-                            break;
-
-                          case 22:
-                            _context.prev = 22;
-                            _context.t0 = _context['catch'](4);
-                            _didIteratorError = true;
-                            _iteratorError = _context.t0;
-
-                          case 26:
-                            _context.prev = 26;
-                            _context.prev = 27;
-
-                            if (!_iteratorNormalCompletion && _iterator.return) {
-                              _iterator.return();
-                            }
-
-                          case 29:
-                            _context.prev = 29;
-
-                            if (!_didIteratorError) {
-                              _context.next = 32;
-                              break;
-                            }
-
-                            throw _iteratorError;
-
-                          case 32:
-                            return _context.finish(29);
-
-                          case 33:
-                            return _context.finish(26);
-
-                          case 34:
-                            resolve(200);
-                            _context.next = 41;
-                            break;
-
-                          case 37:
-                            _context.prev = 37;
-                            _context.t1 = _context['catch'](0);
+                          case 7:
+                            _context2.prev = 7;
+                            _context2.t0 = _context2['catch'](0);
 
                             console.error('converter.js');
-                            reject(_context.t1);
+                            reject(_context2.t0);
 
-                          case 41:
+                          case 11:
                           case 'end':
-                            return _context.stop();
+                            return _context2.stop();
                         }
                       }
-                    }, _callee, _this, [[0, 37], [4, 22, 26, 34], [27,, 29, 33]]);
+                    }, _callee2, _this2, [[0, 7]]);
                   }));
 
                   return function (_x2, _x3) {
@@ -141,10 +114,10 @@ var Converter = (function () {
 
               case 1:
               case 'end':
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
       return function exec(_x) {

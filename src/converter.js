@@ -6,14 +6,15 @@ export default class Converter {
   static async exec(config) {
     return new Promise(async (resolve, reject) => {
       try {
-        for (const url of Object.keys(config)) {
-          const body = await Request.fetch(url);
-          console.log(body);
-          console.log(`${url} length: ${body.length}`);
-          const info = await Lexer.exec(body);
-          console.log(info);
-        }
-        resolve(200);
+        const updates = await Promise.all(Object.keys(config).map((url) => {
+          return new Promise(async (resolve, reject) => {
+            try {
+              const body = await Request.fetch(url);
+              resolve(Lexer.exec(body));
+            } catch (err) { reject(err); }
+          });
+        }));
+        resolve(updates);
       } catch (err) {
         console.error(`converter.js`);
         reject(err);
