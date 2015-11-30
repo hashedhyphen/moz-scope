@@ -12,9 +12,9 @@ var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _converter = require('./converter.js');
+var _controller = require('./controller.js');
 
-var _converter2 = _interopRequireDefault(_converter);
+var _controller2 = _interopRequireDefault(_controller);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33,7 +33,7 @@ var MozScope = (function () {
       console.log(MozScope.VERSION);
     }
   }, {
-    key: 'queryUpdates',
+    key: 'showUpdates',
     value: (function () {
       var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
         var config, updates;
@@ -48,7 +48,7 @@ var MozScope = (function () {
               case 3:
                 config = _context.sent;
                 _context.next = 6;
-                return _converter2.default.exec(config);
+                return _controller2.default.queryUpdates(config);
 
               case 6:
                 updates = _context.sent;
@@ -69,7 +69,7 @@ var MozScope = (function () {
         }, _callee, this, [[0, 10]]);
       }));
 
-      return function queryUpdates() {
+      return function showUpdates() {
         return ref.apply(this, arguments);
       };
     })()
@@ -85,8 +85,9 @@ var MozScope = (function () {
 
 exports.default = MozScope;
 
-var readConfig = function readConfig() {
+function readConfig() {
   var config_path = './test/config.json';
+
   return new Promise(function (resolve, reject) {
     _fs2.default.readFile(config_path, function (err, buf) {
       if (err) {
@@ -97,4 +98,4 @@ var readConfig = function readConfig() {
       }
     });
   });
-};
+}

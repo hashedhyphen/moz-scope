@@ -12,5 +12,5 @@ switch (process.argv[2]) {
     _mozscope2.default.showVersion();
     break;
   default:
-    _mozscope2.default.queryUpdates();
+    _mozscope2.default.showUpdates();
 }
