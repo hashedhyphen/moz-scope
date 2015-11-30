@@ -6,5 +6,5 @@ switch (process.argv[2]) {
     MozScope.showVersion();
     break;
   default:
-    MozScope.queryUpdates();
+    MozScope.showUpdates();
 }

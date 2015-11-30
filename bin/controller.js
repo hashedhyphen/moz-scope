@@ -22,13 +22,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Converter = (function () {
-  function Converter() {
-    _classCallCheck(this, Converter);
+var Controller = (function () {
+  function Controller() {
+    _classCallCheck(this, Controller);
   }
 
-  _createClass(Converter, null, [{
-    key: 'exec',
+  _createClass(Controller, null, [{
+    key: 'queryUpdates',
     value: (function () {
       var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(config) {
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -53,16 +53,16 @@ var Converter = (function () {
         }, _callee, this);
       }));
 
-      return function exec(_x) {
+      return function queryUpdates(_x) {
         return ref.apply(this, arguments);
       };
     })()
   }]);
 
-  return Converter;
+  return Controller;
 })();
 
-exports.default = Converter;
+exports.default = Controller;
 
 function configToPromises(config) {
   var urls = Object.keys(config);

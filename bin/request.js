@@ -28,7 +28,9 @@ var Request = (function () {
       return new Promise(function (resolve, reject) {
         try {
           if (!url.startsWith(origin)) {
-            throw 'URL\'s origin is invalid: ' + url;
+            reject({
+              url: url, msg: 'URL\'s origin is invalid'
+            });
           }
 
           if (!url.endsWith(suffix)) {
@@ -37,7 +39,9 @@ var Request = (function () {
           console.log('requesting... ' + url);
           _https2.default.get(url, function (res) {
             if (res.statusCode !== 200) {
-              throw 'Got a non-200 status code: ' + res.statusCode;
+              reject({
+                url: url, msg: 'Got a non-200 status code: ' + res.statusCode
+              });
             }
 
             var body = '';
@@ -49,9 +53,10 @@ var Request = (function () {
               return resolve(body);
             });
           }).on('error', function (err) {
-            throw err;
+            reject(err);
           });
         } catch (err) {
+          console.error('error in request.js: ' + url);
           reject(err);
         }
       });

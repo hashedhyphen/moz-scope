@@ -1,10 +1,10 @@
 import 'babel-polyfill';
 
 export default class Lexer {
-  static exec(body) {
+  static exec(html) {
     return new Promise((resolve, reject) => {
       try {
-        const revision = extractLatestRevision(body)
+        const revision = extractLatestRevision(html)
             , date     = extractDate(revision)
             , author   = extractAuthor(revision)
             , comment  = extractComment(revision);

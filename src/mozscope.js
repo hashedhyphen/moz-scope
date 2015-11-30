@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import fs from 'fs';
-import Converter from './converter.js';
+import Controller from './controller.js';
 
 export default class MozScope {
   static get VERSION() {
@@ -11,17 +11,18 @@ export default class MozScope {
     console.log(MozScope.VERSION);
   }
 
-  static async queryUpdates() {
+  static async showUpdates() {
     try {
       const config  = await readConfig();
-      const updates = await Converter.exec(config);
+      const updates = await Controller.queryUpdates(config);
       console.log(updates);
     } catch (err) { console.error(err); }
   }
 }
 
-const readConfig = () => {
+function readConfig () {
   const config_path = `./test/config.json`;
+
   return new Promise((resolve, reject) => {
     fs.readFile(config_path, (err, buf) => {
       if (err) {
@@ -32,4 +33,4 @@ const readConfig = () => {
       }
     });
   });
-};
+}

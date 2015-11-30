@@ -17,10 +17,10 @@ var Lexer = (function () {
 
   _createClass(Lexer, null, [{
     key: 'exec',
-    value: function exec(body) {
+    value: function exec(html) {
       return new Promise(function (resolve, reject) {
         try {
-          var revision = extractLatestRevision(body),
+          var revision = extractLatestRevision(html),
               date = extractDate(revision),
               author = extractAuthor(revision),
               comment = extractComment(revision);
