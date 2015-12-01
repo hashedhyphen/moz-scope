@@ -5,21 +5,21 @@ export default class Request {
     const origin = `https://developer.mozilla.org`
         , suffix = `$history`;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       try {
         if (!url.startsWith(origin)) {
-          reject({
-            url, msg: `URL's origin is invalid`
-          });
+          console.error(`Error: URL's origin is invalid`);
+          console.error(`URL: ${url}`);
+          return resolve(null);
         }
 
         if (!url.endsWith(suffix)) { url += suffix; }
         console.log(`requesting... ${url}`);
         https.get(url, (res) => {
           if (res.statusCode !== 200) {
-            reject({
-              url, msg: `Got a non-200 status code: ${res.statusCode}`
-            });
+            console.error(`Error: non-200 status code: ${res.statusCode}`);
+            console.error(`URL: ${url}`);
+            return resolve(null);
           }
 
           let body = ``;
@@ -27,11 +27,13 @@ export default class Request {
           res.on(`data`, (chunk) => body += chunk);
           res.on(`end`,  ()      => resolve(body));
 
-        }).on(`error`, (err) => { reject(err); });
+        }).on(`error`, (err) => { throw err; });
 
       } catch (err) {
-        console.error(`error in request.js: ${url}`);
-        reject(err);
+        console.error(err);
+        console.error(`captured in request.js`);
+        console.error(`URL: ${url}`);
+        resolve(null);
       }
     });
   }

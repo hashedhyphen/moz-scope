@@ -18,7 +18,7 @@ var _controller2 = _interopRequireDefault(_controller);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, "next"); var callThrow = step.bind(null, "throw"); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -54,19 +54,20 @@ var MozScope = (function () {
                 updates = _context.sent;
 
                 console.log(updates);
-                _context.next = 13;
+                console.log('end');
+                _context.next = 14;
                 break;
 
-              case 10:
-                _context.prev = 10;
+              case 11:
+                _context.prev = 11;
                 _context.t0 = _context['catch'](0);
                 console.error(_context.t0);
-              case 13:
+              case 14:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 10]]);
+        }, _callee, this, [[0, 11]]);
       }));
 
       return function showUpdates() {

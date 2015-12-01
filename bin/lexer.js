@@ -27,8 +27,8 @@ var Lexer = (function () {
 
           resolve({ date: date, author: author, comment: comment });
         } catch (err) {
-          reject(err);
-        }
+          resolve(null);
+        } // for fault tolerance
       });
     }
   }]);

@@ -18,7 +18,7 @@ var _lexer2 = _interopRequireDefault(_lexer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, "next"); var callThrow = step.bind(null, "throw"); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -29,70 +29,104 @@ var Controller = (function () {
 
   _createClass(Controller, null, [{
     key: 'queryUpdates',
-    value: (function () {
-      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(config) {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                return _context.abrupt('return', new Promise(function (resolve, reject) {
-                  try {
-                    var updates = Promise.all(configToPromises(config));
-                    resolve(updates);
-                  } catch (err) {
-                    console.error('error in converter.js');
-                    reject(err);
-                  }
-                }));
+    value: function queryUpdates(config) {
+      return new Promise((function () {
+        var _this = this;
 
-              case 1:
-              case 'end':
-                return _context.stop();
+        var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(resolve, reject) {
+          var updates;
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  _context.prev = 0;
+                  _context.next = 3;
+                  return Promise.all(configToPromises(config));
+
+                case 3:
+                  updates = _context.sent;
+
+                  resolve(updates);
+                  _context.next = 11;
+                  break;
+
+                case 7:
+                  _context.prev = 7;
+                  _context.t0 = _context['catch'](0);
+
+                  console.error('error in controller.js');
+                  reject(_context.t0);
+
+                case 11:
+                case 'end':
+                  return _context.stop();
+              }
             }
-          }
-        }, _callee, this);
-      }));
+          }, _callee, _this, [[0, 7]]);
+        }));
 
-      return function queryUpdates(_x) {
-        return ref.apply(this, arguments);
-      };
-    })()
+        return function (_x, _x2) {
+          return ref.apply(this, arguments);
+        };
+      })());
+    }
   }]);
 
   return Controller;
 })();
 
-exports.default = Controller;
+// Fault-tolerant design
+// If a resource is fetched and lexed succeessfully,
+// latest info is pushed, otherwise null.
 
+exports.default = Controller;
 function configToPromises(config) {
   var urls = Object.keys(config);
 
-  return urls.map((function () {
-    var _this = this;
+  return urls.map(function (url) {
+    return new Promise((function () {
+      var _this2 = this;
 
-    var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(url) {
-      var html;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return _request2.default.fetch(url);
+      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(resolve) {
+        var html;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return _request2.default.fetch(url);
 
-            case 2:
-              html = _context2.sent;
-              return _context2.abrupt('return', _lexer2.default.exec(html));
+              case 3:
+                html = _context2.sent;
 
-            case 4:
-            case 'end':
-              return _context2.stop();
+                if (html) {
+                  resolve(_lexer2.default.exec(html));
+                } else {
+                  resolve(null);
+                } // when html is null
+                _context2.next = 12;
+                break;
+
+              case 7:
+                _context2.prev = 7;
+                _context2.t0 = _context2['catch'](0);
+
+                console.error(_context2.t0);
+                console.error('captured in configToPromises');
+                resolve(null); // ECONNREFUSED etc...
+
+              case 12:
+              case 'end':
+                return _context2.stop();
+            }
           }
-        }
-      }, _callee2, _this);
-    }));
+        }, _callee2, _this2, [[0, 7]]);
+      }));
 
-    return function (_x2) {
-      return ref.apply(this, arguments);
-    };
-  })());
+      return function (_x3) {
+        return ref.apply(this, arguments);
+      };
+    })());
+  });
 }

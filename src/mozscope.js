@@ -16,6 +16,7 @@ export default class MozScope {
       const config  = await readConfig();
       const updates = await Controller.queryUpdates(config);
       console.log(updates);
+      console.log(`end`);
     } catch (err) { console.error(err); }
   }
 }

@@ -10,7 +10,7 @@ export default class Lexer {
             , comment  = extractComment(revision);
 
         resolve({ date, author, comment });
-      } catch (err) { reject(err); }
+      } catch (err) { resolve(null); }  // for fault tolerance
     });
   }
 }

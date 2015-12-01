@@ -25,12 +25,12 @@ var Request = (function () {
       var origin = 'https://developer.mozilla.org',
           suffix = '$history';
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         try {
           if (!url.startsWith(origin)) {
-            reject({
-              url: url, msg: 'URL\'s origin is invalid'
-            });
+            console.error('Error: URL\'s origin is invalid');
+            console.error('URL: ' + url);
+            return resolve(null);
           }
 
           if (!url.endsWith(suffix)) {
@@ -39,9 +39,9 @@ var Request = (function () {
           console.log('requesting... ' + url);
           _https2.default.get(url, function (res) {
             if (res.statusCode !== 200) {
-              reject({
-                url: url, msg: 'Got a non-200 status code: ' + res.statusCode
-              });
+              console.error('Error: non-200 status code: ' + res.statusCode);
+              console.error('URL: ' + url);
+              return resolve(null);
             }
 
             var body = '';
@@ -53,11 +53,13 @@ var Request = (function () {
               return resolve(body);
             });
           }).on('error', function (err) {
-            reject(err);
+            throw err;
           });
         } catch (err) {
-          console.error('error in request.js: ' + url);
-          reject(err);
+          console.error(err);
+          console.error('captured in request.js');
+          console.error('URL: ' + url);
+          resolve(null);
         }
       });
     }
