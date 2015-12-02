@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import fs from 'fs';
+import File       from './file.js';
 import Controller from './controller.js';
 
 export default class MozScope {
@@ -13,25 +13,11 @@ export default class MozScope {
 
   static async showUpdates() {
     try {
-      const config  = await readConfig();
+      const config  = await File.readConfig();
       const updates = await Controller.queryUpdates(config);
       console.log(updates);
+
       console.log(`end`);
     } catch (err) { console.error(err); }
   }
-}
-
-function readConfig () {
-  const config_path = `./test/config.json`;
-
-  return new Promise((resolve, reject) => {
-    fs.readFile(config_path, (err, buf) => {
-      if (err) {
-        console.error(`Error: failed to read config.json`);
-        reject(err);
-      } else {
-        resolve(JSON.parse(buf.toString(`utf8`)));
-      }
-    });
-  });
 }

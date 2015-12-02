@@ -8,9 +8,9 @@ Object.defineProperty(exports, "__esModule", {
 
 require('babel-polyfill');
 
-var _fs = require('fs');
+var _file = require('./file.js');
 
-var _fs2 = _interopRequireDefault(_fs);
+var _file2 = _interopRequireDefault(_file);
 
 var _controller = require('./controller.js');
 
@@ -43,7 +43,7 @@ var MozScope = (function () {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return readConfig();
+                return _file2.default.readConfig();
 
               case 3:
                 config = _context.sent;
@@ -54,6 +54,7 @@ var MozScope = (function () {
                 updates = _context.sent;
 
                 console.log(updates);
+
                 console.log('end');
                 _context.next = 14;
                 break;
@@ -85,18 +86,3 @@ var MozScope = (function () {
 })();
 
 exports.default = MozScope;
-
-function readConfig() {
-  var config_path = './test/config.json';
-
-  return new Promise(function (resolve, reject) {
-    _fs2.default.readFile(config_path, function (err, buf) {
-      if (err) {
-        console.error('Error: failed to read config.json');
-        reject(err);
-      } else {
-        resolve(JSON.parse(buf.toString('utf8')));
-      }
-    });
-  });
-}
