@@ -72,7 +72,7 @@ var MozScope = (function () {
                 updates = _ref4[0];
                 new_table = _ref4[1];
 
-                console.log(updates);
+                logUpdates(updates);
                 _table2.default.update(new_table);
                 _context.next = 24;
                 break;
@@ -104,3 +104,17 @@ var MozScope = (function () {
 })();
 
 exports.default = MozScope;
+
+function logUpdates(updates) {
+  if (Object.keys(updates).length === 0) {
+    return console.log('All articles is up-to-date :)');
+  }
+
+  console.log('New post!\n');
+  for (var url in updates) {
+    console.log('URL: ' + url);
+    console.log('Date: ' + new Date(updates[url].writtenAt));
+    console.log('Author: ' + updates[url].author);
+    console.log('Comment: ' + updates[url].comment + '\n');
+  }
+}

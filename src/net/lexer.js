@@ -38,7 +38,7 @@ function extractDate(revision) {
     const date_regex = /<time[\s\S]+?>([\s\S]+?)<\/time>/
         , date = date_regex.exec(revision)[1];
 
-    return(new Date(date));
+    return(new Date(date).getTime());
   } catch (err) {
     console.error(`error on date`);
     throw err;

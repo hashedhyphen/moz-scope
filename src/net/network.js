@@ -25,7 +25,7 @@ export default class Network {
       let info = await Lexer.exec(html);
       if (!info) { return null; }  // when error in lexer
 
-      info.fetchedAt = new Date();
+      info.fetchedAt = new Date().getTime();
       return { url, info };
     } catch (err) {
       console.error(`error in network.js`);

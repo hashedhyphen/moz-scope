@@ -146,7 +146,7 @@ var Network = (function () {
               case 11:
                 // when error in lexer
 
-                info.fetchedAt = new Date();
+                info.fetchedAt = new Date().getTime();
                 return _context3.abrupt('return', { url: url, info: info });
 
               case 15:
