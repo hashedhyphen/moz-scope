@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-require('babel-polyfill');
-
 var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
@@ -16,46 +14,32 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var File = (function () {
-  function File() {
-    _classCallCheck(this, File);
+var Config = (function () {
+  function Config() {
+    _classCallCheck(this, Config);
   }
 
-  _createClass(File, null, [{
-    key: 'readConfig',
-    value: function readConfig() {
-      var config_path = './test/config.json';
-
+  _createClass(Config, null, [{
+    key: 'read',
+    value: function read() {
       return new Promise(function (resolve, reject) {
-        _fs2.default.readFile(config_path, function (err, buf) {
+        _fs2.default.readFile(Config.PATH, function (err, buf) {
           if (err) {
             console.error('failed to read config.json');
-            reject(err);
-          } else {
-            resolve(JSON.parse(buf.toString('utf8')));
+            return reject(err);
           }
+          resolve(JSON.parse(buf.toString('utf8')));
         });
       });
     }
   }, {
-    key: 'updateTable',
-    value: function updateTable(latests) {
-      var table_path = './test/table.json',
-          json = JSON.stringify(latests, null, '  ');
-
-      return new Promise(function (resolve, reject) {
-        _fs2.default.writeFile(table_path, json, function (err) {
-          if (err) {
-            return reject(err);
-          }
-
-          return 1;
-        });
-      });
+    key: 'PATH',
+    get: function get() {
+      return './test/config.json';
     }
   }]);
 
-  return File;
+  return Config;
 })();
 
-exports.default = File;
+exports.default = Config;

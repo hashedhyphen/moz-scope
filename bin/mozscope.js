@@ -1,5 +1,7 @@
 'use strict';
 
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
@@ -8,13 +10,17 @@ Object.defineProperty(exports, "__esModule", {
 
 require('babel-polyfill');
 
-var _file = require('./file.js');
+var _config = require('./model/config.js');
 
-var _file2 = _interopRequireDefault(_file);
+var _config2 = _interopRequireDefault(_config);
 
-var _controller = require('./controller.js');
+var _table = require('./model/table.js');
 
-var _controller2 = _interopRequireDefault(_controller);
+var _table2 = _interopRequireDefault(_table);
+
+var _network = require('./net/network.js');
+
+var _network2 = _interopRequireDefault(_network);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,38 +42,51 @@ var MozScope = (function () {
     key: 'showUpdates',
     value: (function () {
       var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        var config, latests;
+        var config, urls, _ref, _ref2, states, table, _ref3, _ref4, updates, new_table;
+
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return _file2.default.readConfig();
+                return _config2.default.read();
 
               case 3:
                 config = _context.sent;
-                _context.next = 6;
-                return _controller2.default.queryLatestInfo(config);
+                urls = Object.keys(config);
+                _context.next = 7;
+                return Promise.all([_network2.default.queryStateAll(urls), _table2.default.read()]);
 
-              case 6:
-                latests = _context.sent;
+              case 7:
+                _ref = _context.sent;
+                _ref2 = _slicedToArray(_ref, 2);
+                states = _ref2[0];
+                table = _ref2[1];
+                _context.next = 13;
+                return _table2.default.diff(states, table);
 
-                _file2.default.updateTable(latests);
-                console.log(latests);
-                _context.next = 14;
+              case 13:
+                _ref3 = _context.sent;
+                _ref4 = _slicedToArray(_ref3, 2);
+                updates = _ref4[0];
+                new_table = _ref4[1];
+
+                console.log(updates);
+                _table2.default.update(new_table);
+                _context.next = 24;
                 break;
 
-              case 11:
-                _context.prev = 11;
+              case 21:
+                _context.prev = 21;
                 _context.t0 = _context['catch'](0);
                 console.error(_context.t0);
-              case 14:
+              case 24:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 11]]);
+        }, _callee, this, [[0, 21]]);
       }));
 
       return function showUpdates() {
