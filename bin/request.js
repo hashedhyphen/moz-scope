@@ -36,7 +36,6 @@ var Request = (function () {
           if (!url.endsWith(suffix)) {
             url += suffix;
           }
-          console.log('requesting... ' + url);
           _https2.default.get(url, function (res) {
             if (res.statusCode !== 200) {
               console.error('Error: non-200 status code: ' + res.statusCode);

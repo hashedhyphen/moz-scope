@@ -37,6 +37,22 @@ var File = (function () {
         });
       });
     }
+  }, {
+    key: 'updateTable',
+    value: function updateTable(latests) {
+      var table_path = './test/table.json',
+          json = JSON.stringify(latests, null, '  ');
+
+      return new Promise(function (resolve, reject) {
+        _fs2.default.writeFile(table_path, json, function (err) {
+          if (err) {
+            return reject(err);
+          }
+
+          return 1;
+        });
+      });
+    }
   }]);
 
   return File;

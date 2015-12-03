@@ -2,15 +2,19 @@ import 'babel-polyfill';
 
 export default class Lexer {
   static exec(html) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       try {
-        const revision = extractLatestRevision(html)
-            , date     = extractDate(revision)
-            , author   = extractAuthor(revision)
-            , comment  = extractComment(revision);
+        const revision  = extractLatestRevision(html)
+            , writtenAt = extractDate(revision)
+            , author    = extractAuthor(revision)
+            , comment   = extractComment(revision);
 
-        resolve({ date, author, comment });
-      } catch (err) { resolve(null); }  // for fault tolerance
+        resolve({ writtenAt, author, comment });
+      } catch (err) {
+        console.error(err);
+        console.error(`error in Lexer.exec`);
+        resolve(null);  // for fault tolerance
+      }
     });
   }
 }

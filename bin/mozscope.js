@@ -36,7 +36,7 @@ var MozScope = (function () {
     key: 'showUpdates',
     value: (function () {
       var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        var config, updates;
+        var config, latests;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -48,14 +48,13 @@ var MozScope = (function () {
               case 3:
                 config = _context.sent;
                 _context.next = 6;
-                return _controller2.default.queryUpdates(config);
+                return _controller2.default.queryLatestInfo(config);
 
               case 6:
-                updates = _context.sent;
+                latests = _context.sent;
 
-                console.log(updates);
-
-                console.log('end');
+                _file2.default.updateTable(latests);
+                console.log(latests);
                 _context.next = 14;
                 break;
 

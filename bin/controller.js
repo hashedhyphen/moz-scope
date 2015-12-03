@@ -28,41 +28,46 @@ var Controller = (function () {
   }
 
   _createClass(Controller, null, [{
-    key: 'queryUpdates',
-    value: function queryUpdates(config) {
+    key: 'queryLatestInfo',
+    value: function queryLatestInfo(config) {
       return new Promise((function () {
         var _this = this;
 
         var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(resolve, reject) {
-          var updates;
+          var entries, hash;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
                   _context.prev = 0;
                   _context.next = 3;
-                  return Promise.all(configToPromises(config));
+                  return Promise.all(getPromisesFromConfig(config));
 
                 case 3:
-                  updates = _context.sent;
+                  entries = _context.sent;
+                  _context.next = 6;
+                  return createHash(entries);
 
-                  resolve(updates);
-                  _context.next = 11;
+                case 6:
+                  hash = _context.sent;
+
+                  resolve(hash);
+                  _context.next = 14;
                   break;
 
-                case 7:
-                  _context.prev = 7;
+                case 10:
+                  _context.prev = 10;
                   _context.t0 = _context['catch'](0);
 
                   console.error('error in controller.js');
                   reject(_context.t0);
 
-                case 11:
+                case 14:
                 case 'end':
                   return _context.stop();
               }
             }
-          }, _callee, _this, [[0, 7]]);
+          }, _callee, _this, [[0, 10]]);
         }));
 
         return function (_x, _x2) {
@@ -80,7 +85,7 @@ var Controller = (function () {
 // latest info is pushed, otherwise null.
 
 exports.default = Controller;
-function configToPromises(config) {
+function getPromisesFromConfig(config) {
   var urls = Object.keys(config);
 
   return urls.map(function (url) {
@@ -88,7 +93,7 @@ function configToPromises(config) {
       var _this2 = this;
 
       var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(resolve) {
-        var html;
+        var html, info;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -101,32 +106,64 @@ function configToPromises(config) {
                 html = _context2.sent;
 
                 if (html) {
-                  resolve(_lexer2.default.exec(html));
-                } else {
-                  resolve(null);
-                } // when html is null
-                _context2.next = 12;
+                  _context2.next = 6;
+                  break;
+                }
+
+                return _context2.abrupt('return', resolve(null));
+
+              case 6:
+                _context2.next = 8;
+                return _lexer2.default.exec(html);
+
+              case 8:
+                info = _context2.sent;
+
+                if (info) {
+                  _context2.next = 11;
+                  break;
+                }
+
+                return _context2.abrupt('return', resolve(null));
+
+              case 11:
+                // failed to lex
+
+                info.fetchedAt = new Date();
+                resolve({ url: url, info: info });
+                _context2.next = 20;
                 break;
 
-              case 7:
-                _context2.prev = 7;
+              case 15:
+                _context2.prev = 15;
                 _context2.t0 = _context2['catch'](0);
 
                 console.error(_context2.t0);
                 console.error('captured in configToPromises');
                 resolve(null); // ECONNREFUSED etc...
 
-              case 12:
+              case 20:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, _this2, [[0, 7]]);
+        }, _callee2, _this2, [[0, 15]]);
       }));
 
       return function (_x3) {
         return ref.apply(this, arguments);
       };
     })());
+  });
+}
+
+// process with O(n)
+function createHash(entries) {
+  return new Promise(function (resolve) {
+    var hash = {};
+    entries.forEach(function (entry) {
+      return hash[entry.url] = entry.info;
+    });
+    resolve(hash);
   });
 }

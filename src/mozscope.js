@@ -14,10 +14,9 @@ export default class MozScope {
   static async showUpdates() {
     try {
       const config  = await File.readConfig();
-      const updates = await Controller.queryUpdates(config);
-      console.log(updates);
-
-      console.log(`end`);
+      const latests = await Controller.queryLatestInfo(config);
+      File.updateTable(latests);
+      console.log(latests);
     } catch (err) { console.error(err); }
   }
 }

@@ -18,17 +18,19 @@ var Lexer = (function () {
   _createClass(Lexer, null, [{
     key: 'exec',
     value: function exec(html) {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         try {
           var revision = extractLatestRevision(html),
-              date = extractDate(revision),
+              writtenAt = extractDate(revision),
               author = extractAuthor(revision),
               comment = extractComment(revision);
 
-          resolve({ date: date, author: author, comment: comment });
+          resolve({ writtenAt: writtenAt, author: author, comment: comment });
         } catch (err) {
-          resolve(null);
-        } // for fault tolerance
+          console.error(err);
+          console.error('error in Lexer.exec');
+          resolve(null); // for fault tolerance
+        }
       });
     }
   }]);

@@ -16,4 +16,17 @@ export default class File {
       });
     });
   }
+
+  static updateTable(latests) {
+    const table_path = `./test/table.json`
+        , json = JSON.stringify(latests, null, `  `);
+
+    return new Promise((resolve, reject) => {
+      fs.writeFile(table_path, json, (err) => {
+        if (err) { return reject(err); }
+
+        return 1;
+      });
+    });
+  }
 }
