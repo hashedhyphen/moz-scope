@@ -20,12 +20,13 @@ var Lexer = (function () {
     value: function exec(html) {
       return new Promise(function (resolve) {
         try {
-          var revision = extractLatestRevision(html),
+          var title = extractTitle(html),
+              revision = extractLatestRevision(html),
               writtenAt = extractDate(revision),
               author = extractAuthor(revision),
               comment = extractComment(revision);
 
-          resolve({ writtenAt: writtenAt, author: author, comment: comment });
+          resolve({ title: title, writtenAt: writtenAt, author: author, comment: comment });
         } catch (err) {
           console.error(err);
           console.error('error in Lexer.exec');
@@ -39,6 +40,18 @@ var Lexer = (function () {
 })();
 
 exports.default = Lexer;
+
+function extractTitle(html) {
+  try {
+    var h1_regex = /<h1>[\s\S]+?<a[\s\S]+?>([\s\S]+?)<\/a><\/h1>/,
+        title = h1_regex.exec(html)[1];
+
+    return title;
+  } catch (err) {
+    console.error('error on title');
+    throw err;
+  }
+}
 
 function extractLatestRevision(html) {
   try {

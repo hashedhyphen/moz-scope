@@ -4,18 +4,31 @@ export default class Lexer {
   static exec(html) {
     return new Promise((resolve) => {
       try {
-        const revision  = extractLatestRevision(html)
+        const title     = extractTitle(html)
+            , revision  = extractLatestRevision(html)
             , writtenAt = extractDate(revision)
             , author    = extractAuthor(revision)
             , comment   = extractComment(revision);
 
-        resolve({ writtenAt, author, comment });
+        resolve({ title, writtenAt, author, comment });
       } catch (err) {
         console.error(err);
         console.error(`error in Lexer.exec`);
         resolve(null);  // for fault tolerance
       }
     });
+  }
+}
+
+function extractTitle(html) {
+  try {
+    const h1_regex = /<h1>[\s\S]+?<a[\s\S]+?>([\s\S]+?)<\/a><\/h1>/
+        , title = h1_regex.exec(html)[1];
+
+    return title;
+  } catch (err) {
+    console.error(`error on title`);
+    throw err;
   }
 }
 

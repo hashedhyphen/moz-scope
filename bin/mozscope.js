@@ -112,7 +112,7 @@ function logUpdates(updates) {
 
   console.log('New post!\n');
   for (var url in updates) {
-    console.log('URL: ' + url);
+    console.log('Title: ' + updates[url].title);
     console.log('Date: ' + new Date(updates[url].writtenAt));
     console.log('Author: ' + updates[url].author);
     console.log('Comment: ' + updates[url].comment + '\n');
