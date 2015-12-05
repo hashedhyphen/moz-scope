@@ -16,6 +16,10 @@ var _lexer = require('./lexer.js');
 
 var _lexer2 = _interopRequireDefault(_lexer);
 
+var _progress = require('./progress.js');
+
+var _progress2 = _interopRequireDefault(_progress);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
@@ -43,18 +47,22 @@ var Network = (function () {
               case 0:
                 _context2.prev = 0;
                 return _context2.delegateYield(regeneratorRuntime.mark(function _callee() {
-                  var promises, states, hash;
+                  var progress, promises, states, hash;
                   return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                       switch (_context.prev = _context.next) {
                         case 0:
+                          progress = new _progress2.default(urls.length);
+
+                          progress.emit('update');
+
                           promises = urls.map(function (url) {
-                            return Network.queryState(url);
+                            return Network.queryState(url, progress);
                           });
-                          _context.next = 3;
+                          _context.next = 5;
                           return Promise.all(promises);
 
-                        case 3:
+                        case 5:
                           states = _context.sent;
                           hash = {};
 
@@ -65,7 +73,7 @@ var Network = (function () {
                             v: hash
                           });
 
-                        case 7:
+                        case 9:
                         case 'end':
                           return _context.stop();
                       }
@@ -109,7 +117,7 @@ var Network = (function () {
   }, {
     key: 'queryState',
     value: (function () {
-      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(url) {
+      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(url, progress) {
         var html, info;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -145,27 +153,30 @@ var Network = (function () {
 
               case 11:
                 // when error in lexer
-
                 info.fetchedAt = new Date().getTime();
+
+                if (progress) {
+                  progress.emit('update');
+                }
                 return _context3.abrupt('return', { url: url, info: info });
 
-              case 15:
-                _context3.prev = 15;
+              case 16:
+                _context3.prev = 16;
                 _context3.t0 = _context3['catch'](0);
 
-                console.error('error in network.js');
+                console.error('error in Network.queryState');
                 console.error(_context3.t0);
                 return _context3.abrupt('return', null);
 
-              case 20:
+              case 21:
               case 'end':
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[0, 15]]);
+        }, _callee3, this, [[0, 16]]);
       }));
 
-      return function queryState(_x2) {
+      return function queryState(_x2, _x3) {
         return ref.apply(this, arguments);
       };
     })()
