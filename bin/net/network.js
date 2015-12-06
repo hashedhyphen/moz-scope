@@ -67,7 +67,9 @@ var Network = (function () {
                           hash = {};
 
                           states.forEach(function (state) {
-                            return hash[state.url] = state.info;
+                            if (state) {
+                              hash[state.url] = state.info;
+                            }
                           });
                           return _context.abrupt('return', {
                             v: hash

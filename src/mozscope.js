@@ -1,6 +1,6 @@
 import 'babel-polyfill';
-import Config  from './model/config.js';
-import Table   from './model/table.js';
+import Config  from './store/config.js';
+import Table   from './store/table.js';
 import Network from './net/network.js';
 
 export default class MozScope {
@@ -14,8 +14,7 @@ export default class MozScope {
 
   static async showUpdates() {
     try {
-      const config = await Config.read();
-      const urls   = Object.keys(config);
+      const urls = await Config.read();
 
       const [states, table] = await Promise.all([
         Network.queryStateAll(urls), Table.read()

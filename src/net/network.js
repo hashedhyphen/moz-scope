@@ -13,7 +13,9 @@ export default class Network {
       const states   = await Promise.all(promises);
 
       let hash = {};
-      states.forEach((state) => hash[state.url] = state.info);
+      states.forEach((state) => {
+        if (state) { hash[state.url] = state.info; }
+      });
       return hash;
     } catch (err) {
       console.error(`error in Network.queryStateAll`);

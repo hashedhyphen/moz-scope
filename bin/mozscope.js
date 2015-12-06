@@ -10,11 +10,11 @@ Object.defineProperty(exports, "__esModule", {
 
 require('babel-polyfill');
 
-var _config = require('./model/config.js');
+var _config = require('./store/config.js');
 
 var _config2 = _interopRequireDefault(_config);
 
-var _table = require('./model/table.js');
+var _table = require('./store/table.js');
 
 var _table2 = _interopRequireDefault(_table);
 
@@ -42,7 +42,7 @@ var MozScope = (function () {
     key: 'showUpdates',
     value: (function () {
       var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        var config, urls, _ref, _ref2, states, table, _ref3, _ref4, updates, new_table;
+        var urls, _ref, _ref2, states, table, _ref3, _ref4, updates, new_table;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -53,20 +53,19 @@ var MozScope = (function () {
                 return _config2.default.read();
 
               case 3:
-                config = _context.sent;
-                urls = Object.keys(config);
-                _context.next = 7;
+                urls = _context.sent;
+                _context.next = 6;
                 return Promise.all([_network2.default.queryStateAll(urls), _table2.default.read()]);
 
-              case 7:
+              case 6:
                 _ref = _context.sent;
                 _ref2 = _slicedToArray(_ref, 2);
                 states = _ref2[0];
                 table = _ref2[1];
-                _context.next = 13;
+                _context.next = 12;
                 return _table2.default.diff(states, table);
 
-              case 13:
+              case 12:
                 _ref3 = _context.sent;
                 _ref4 = _slicedToArray(_ref3, 2);
                 updates = _ref4[0];
@@ -74,19 +73,19 @@ var MozScope = (function () {
 
                 logUpdates(updates);
                 _table2.default.update(new_table);
-                _context.next = 24;
+                _context.next = 23;
                 break;
 
-              case 21:
-                _context.prev = 21;
+              case 20:
+                _context.prev = 20;
                 _context.t0 = _context['catch'](0);
                 console.error(_context.t0);
-              case 24:
+              case 23:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 21]]);
+        }, _callee, this, [[0, 20]]);
       }));
 
       return function showUpdates() {
