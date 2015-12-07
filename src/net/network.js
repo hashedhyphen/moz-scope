@@ -7,7 +7,7 @@ export default class Network {
   static async queryStateAll(urls) {
     try {
       const progress = new Progress(urls.length);
-      progress.emit(`update`);
+      progress.start();
 
       const promises = urls.map((url) => Network.queryState(url, progress));
       const states   = await Promise.all(promises);
@@ -15,6 +15,7 @@ export default class Network {
       let hash = {};
       states.forEach((state) => {
         if (state) { hash[state.url] = state.info; }
+        // exclude null states caused by errors
       });
       return hash;
     } catch (err) {

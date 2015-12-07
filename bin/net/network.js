@@ -54,7 +54,7 @@ var Network = (function () {
                         case 0:
                           progress = new _progress2.default(urls.length);
 
-                          progress.emit('update');
+                          progress.start();
 
                           promises = urls.map(function (url) {
                             return Network.queryState(url, progress);
@@ -70,6 +70,7 @@ var Network = (function () {
                             if (state) {
                               hash[state.url] = state.info;
                             }
+                            // exclude null states caused by errors
                           });
                           return _context.abrupt('return', {
                             v: hash

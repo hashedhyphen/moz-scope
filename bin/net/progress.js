@@ -1,5 +1,7 @@
 'use strict';
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -20,22 +22,31 @@ var Progress = (function (_EventEmitter) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Progress).call(this));
 
+    _this.done = 0;
     _this.num_url = num_url;
-    _this.current = 0;
-
-    _this.on('update', function () {
-      process.stdout.write('Done: ' + _this.current + '/' + _this.num_url);
-
-      if (_this.current < _this.num_url) {
-        process.stdout.write('\r');
-      } else {
-        process.stdout.write('\n\n');
-      }
-
-      _this.current++;
-    });
     return _this;
   }
+
+  _createClass(Progress, [{
+    key: 'start',
+    value: function start() {
+      var _this2 = this;
+
+      this.on('update', function () {
+        _this2.done++;
+        process.stdout.write('Done: ' + _this2.done + '/' + _this2.num_url);
+
+        if (_this2.done < _this2.num_url) {
+          process.stdout.write('\r');
+        } else {
+          process.stdout.write('\n\n');
+          _this2.removeAllListeners('update');
+        }
+      });
+
+      process.stdout.write('Done: 0/' + this.num_url + '\r');
+    }
+  }]);
 
   return Progress;
 })(_events.EventEmitter);
