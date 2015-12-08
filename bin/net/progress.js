@@ -24,6 +24,7 @@ var Progress = (function (_EventEmitter) {
 
     _this.done = 0;
     _this.num_url = num_url;
+    _this.position = 0;
     return _this;
   }
 
@@ -32,19 +33,30 @@ var Progress = (function (_EventEmitter) {
     value: function start() {
       var _this2 = this;
 
+      this.intervalID = setInterval(function () {
+        _this2.log();
+        _this2.position = (_this2.position + 1) % 3;
+      }, 250);
+
       this.on('update', function () {
         _this2.done++;
-        process.stdout.write('Done: ' + _this2.done + '/' + _this2.num_url);
-
-        if (_this2.done < _this2.num_url) {
-          process.stdout.write('\r');
-        } else {
-          process.stdout.write('\n\n');
-          _this2.removeAllListeners('update');
+        _this2.log();
+        if (_this2.done === _this2.num_url) {
+          _this2.clear();
         }
       });
-
-      process.stdout.write('Done: 0/' + this.num_url + '\r');
+    }
+  }, {
+    key: 'clear',
+    value: function clear() {
+      clearInterval(this.intervalID);
+      this.removeAllListeners('update');
+      process.stdout.write('\n\n');
+    }
+  }, {
+    key: 'log',
+    value: function log() {
+      process.stdout.write(arrow.get(this.position) + ' Done: ' + this.done + '/' + this.num_url);
     }
   }]);
 
@@ -52,3 +64,5 @@ var Progress = (function (_EventEmitter) {
 })(_events.EventEmitter);
 
 exports.default = Progress;
+
+var arrow = new Map([[0, '\r-  '], [1, '\r-- '], [2, '\r-->']]);
