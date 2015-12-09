@@ -106,7 +106,7 @@ exports.default = MozScope;
 
 function logUpdates(updates) {
   if (Object.keys(updates).length === 0) {
-    return console.log('All articles is up-to-date :)');
+    return console.log('All articles are up-to-date :)');
   }
 
   console.log('New post!\n');
