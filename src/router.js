@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import MozScope from './mozscope.js';
 
 switch (process.argv[2]) {
