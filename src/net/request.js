@@ -26,7 +26,11 @@ export default class Request {
           res.on(`data`, (chunk) => body += chunk);
           res.on(`end`,  ()      => resolve(body));
 
-        }).on(`error`, (err) => { throw err; });
+        }).on(`error`, (err) => {
+          console.error(`Network Error: ${err}`);
+          console.error(`URL: ${url}`);
+          resolve(null);
+        });
 
       } catch (err) {
         console.error(err);

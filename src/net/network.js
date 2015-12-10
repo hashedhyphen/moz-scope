@@ -27,10 +27,16 @@ export default class Network {
   static async queryState(url, progress) {
     try {
       const html = await Request.fetch(url);
-      if (!html) { return null; }  // when html is null
+      if (!html) {  // when html is null
+        if (progress) { progress.emit(`update`); }
+        return null;
+      }
 
       let info = await Lexer.exec(html);
-      if (!info) { return null; }  // when error in lexer
+      if (!info) {  // when error in lexer
+        if (progress) { progress.emit(`update`); }
+        return null;
+      }
       info.fetchedAt = new Date().getTime();
 
       if (progress) { progress.emit(`update`); }

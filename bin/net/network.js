@@ -134,28 +134,35 @@ var Network = (function () {
                 html = _context3.sent;
 
                 if (html) {
-                  _context3.next = 6;
+                  _context3.next = 7;
                   break;
                 }
 
+                // when html is null
+                if (progress) {
+                  progress.emit('update');
+                }
                 return _context3.abrupt('return', null);
 
-              case 6:
-                _context3.next = 8;
+              case 7:
+                _context3.next = 9;
                 return _lexer2.default.exec(html);
 
-              case 8:
+              case 9:
                 info = _context3.sent;
 
                 if (info) {
-                  _context3.next = 11;
+                  _context3.next = 13;
                   break;
                 }
 
+                // when error in lexer
+                if (progress) {
+                  progress.emit('update');
+                }
                 return _context3.abrupt('return', null);
 
-              case 11:
-                // when error in lexer
+              case 13:
                 info.fetchedAt = new Date().getTime();
 
                 if (progress) {
@@ -163,20 +170,20 @@ var Network = (function () {
                 }
                 return _context3.abrupt('return', { url: url, info: info });
 
-              case 16:
-                _context3.prev = 16;
+              case 18:
+                _context3.prev = 18;
                 _context3.t0 = _context3['catch'](0);
 
                 console.error('error in Network.queryState');
                 console.error(_context3.t0);
                 return _context3.abrupt('return', null);
 
-              case 21:
+              case 23:
               case 'end':
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[0, 16]]);
+        }, _callee3, this, [[0, 18]]);
       }));
 
       return function queryState(_x2, _x3) {

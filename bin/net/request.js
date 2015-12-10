@@ -52,7 +52,9 @@ var Request = (function () {
               return resolve(body);
             });
           }).on('error', function (err) {
-            throw err;
+            console.error('Network Error: ' + err);
+            console.error('URL: ' + url);
+            resolve(null);
           });
         } catch (err) {
           console.error(err);
