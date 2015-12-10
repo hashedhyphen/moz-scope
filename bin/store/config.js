@@ -26,7 +26,6 @@ var Config = (function () {
   _createClass(Config, null, [{
     key: 'read',
     value: function read() {
-      console.log(Config.PATH);
       return new Promise(function (resolve, reject) {
         _fs2.default.readFile(Config.PATH, function (err, buf) {
           if (err) {

@@ -7,7 +7,6 @@ export default class Config {
   }
 
   static read() {
-    console.log(Config.PATH);
     return new Promise((resolve, reject) => {
       fs.readFile(Config.PATH, (err, buf) => {
         if (err) {

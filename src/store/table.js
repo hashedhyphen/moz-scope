@@ -2,7 +2,7 @@ import fs from 'fs';
 
 export default class Table {
   static get PATH() {
-    return `./store/table.json`;
+    return `./table.json`;
   }
 
   static read() {

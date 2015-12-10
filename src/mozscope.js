@@ -5,7 +5,7 @@ import Network from './net/network.js';
 
 export default class MozScope {
   static get VERSION() {
-    return `0.1.1`;
+    return `0.2.0`;
   }
 
   static showVersion() {

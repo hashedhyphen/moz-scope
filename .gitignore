@@ -1,4 +1,3 @@
-*.eslintrc
 *.bin
 node_modules/
-store/
+table.json

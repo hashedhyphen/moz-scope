@@ -104,7 +104,7 @@ var Table = (function () {
   }, {
     key: 'PATH',
     get: function get() {
-      return './store/table.json';
+      return './table.json';
     }
   }]);
 
