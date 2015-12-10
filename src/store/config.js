@@ -3,10 +3,11 @@ import os from 'os';
 
 export default class Config {
   static get PATH() {
-    return `./test/mozscope.conf`;
+    return `${os.homedir()}/mozscope.conf`;
   }
 
   static read() {
+    console.log(Config.PATH);
     return new Promise((resolve, reject) => {
       fs.readFile(Config.PATH, (err, buf) => {
         if (err) {

@@ -26,6 +26,7 @@ var Config = (function () {
   _createClass(Config, null, [{
     key: 'read',
     value: function read() {
+      console.log(Config.PATH);
       return new Promise(function (resolve, reject) {
         _fs2.default.readFile(Config.PATH, function (err, buf) {
           if (err) {
@@ -44,7 +45,7 @@ var Config = (function () {
   }, {
     key: 'PATH',
     get: function get() {
-      return './test/mozscope.conf';
+      return _os2.default.homedir() + '/mozscope.conf';
     }
   }]);
 

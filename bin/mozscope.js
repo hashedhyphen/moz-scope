@@ -95,7 +95,7 @@ var MozScope = (function () {
   }, {
     key: 'VERSION',
     get: function get() {
-      return '0.0.6';
+      return '0.1.0';
     }
   }]);
 
