@@ -1,8 +1,10 @@
-import fs from 'fs';
+import fs   from 'fs';
+import path from 'path';
 
 export default class Table {
   static get PATH() {
-    return `./table.json`;
+    const dir = path.dirname(process.argv[1]);  // moz-scope/bin
+    return path.resolve(dir, '../table.json');
   }
 
   static read() {
@@ -39,8 +41,8 @@ export default class Table {
 
       let updates = {};
       for (const url in states) {
-        if (!table[url] ||
-            states[url].writtenAt > table[url].writtenAt) {
+        if (!table[url] ||  // create new table or...
+            states[url].writtenAt > table[url].writtenAt) {  // got the new
           updates[url] = states[url];
           table[url]   = states[url];
         }
