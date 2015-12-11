@@ -6,13 +6,13 @@ import Table   from './store/table.js';
 
 export default class MozScope {
   static get VERSION() {
-    return `0.4.0`;
+    return `0.4.1`;
   }
 
   static async resetTable() {
     try {
       await Table.reset();
-      console.log(`Reseted articles' table`);
+      console.log(`Reseted internal storage`);
     } catch (err) { console.error(err); }
   }
 

@@ -9,14 +9,15 @@ export default class Table {
 
   static async diff(states, table) {
     try {
-      if (!table) { return [states, states]; }  // create new table
-
       let updates = {};
-      for (const url in states) {
-        if (!table[url] ||  // create new table or...
-            states[url].writtenAt > table[url].writtenAt) {  // got the new
+      for (let url in states) {
+        if (!table[url] ||  // create a new entry or update to the newer
+            states[url].writtenAt > table[url].writtenAt) {
           updates[url] = states[url];
-          table[url]   = states[url];
+          table[url] = {
+            writtenAt: states[url].writtenAt,
+            fetchedAt: states[url].fetchedAt
+          };
         }
       }
       return [updates, table];
@@ -31,31 +32,18 @@ export default class Table {
       fs.readFile(Table.PATH, (err, buf) => {
         if (err) {
           if (err.code === `ENOENT`) {
-            return resolve(null);  // create new table
+            return resolve({});  // create new table
           }
           console.error(`failed to read table.json`);
           return reject(err);
         }
-
-        if (buf.length === 0) {
-          return resolve(null);  // after reset the table (create new one)
-        }
-
         resolve(JSON.parse(buf.toString(`utf8`)));
       });
     });
   }
 
   static reset() {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(Table.PATH, ``, (err) => {
-        if (err) {
-          console.error(`failed to reset table.json`);
-          return reject(err);
-        }
-        resolve(1);
-      });
-    });
+    Table.update({});
   }
 
   static update(table) {

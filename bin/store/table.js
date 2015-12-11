@@ -35,42 +35,33 @@ var Table = (function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-
-                if (table) {
-                  _context.next = 3;
-                  break;
-                }
-
-                return _context.abrupt('return', [states, states]);
-
-              case 3:
-                // create new table
-
                 updates = {};
 
                 for (url in states) {
-                  if (!table[url] || // create new table or...
+                  if (!table[url] || // create a new entry or update to the newer
                   states[url].writtenAt > table[url].writtenAt) {
-                    // got the new
                     updates[url] = states[url];
-                    table[url] = states[url];
+                    table[url] = {
+                      writtenAt: states[url].writtenAt,
+                      fetchedAt: states[url].fetchedAt
+                    };
                   }
                 }
                 return _context.abrupt('return', [updates, table]);
 
-              case 8:
-                _context.prev = 8;
+              case 6:
+                _context.prev = 6;
                 _context.t0 = _context['catch'](0);
 
                 console.error('error in Table.diff');
                 console.error(_context.t0);
 
-              case 12:
+              case 10:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 8]]);
+        }, _callee, this, [[0, 6]]);
       }));
 
       return function diff(_x, _x2) {
@@ -84,16 +75,11 @@ var Table = (function () {
         _fs2.default.readFile(Table.PATH, function (err, buf) {
           if (err) {
             if (err.code === 'ENOENT') {
-              return resolve(null); // create new table
+              return resolve({}); // create new table
             }
             console.error('failed to read table.json');
             return reject(err);
           }
-
-          if (buf.length === 0) {
-            return resolve(null); // after reset the table (create new one)
-          }
-
           resolve(JSON.parse(buf.toString('utf8')));
         });
       });
@@ -101,15 +87,7 @@ var Table = (function () {
   }, {
     key: 'reset',
     value: function reset() {
-      return new Promise(function (resolve, reject) {
-        _fs2.default.writeFile(Table.PATH, '', function (err) {
-          if (err) {
-            console.error('failed to reset table.json');
-            return reject(err);
-          }
-          resolve(1);
-        });
-      });
+      Table.update({});
     }
   }, {
     key: 'update',

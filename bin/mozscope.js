@@ -50,7 +50,7 @@ var MozScope = (function () {
                 return _table2.default.reset();
 
               case 3:
-                console.log('Reseted articles\' table');
+                console.log('Reseted internal storage');
                 _context.next = 9;
                 break;
 
@@ -153,7 +153,7 @@ var MozScope = (function () {
   }, {
     key: 'VERSION',
     get: function get() {
-      return '0.4.0';
+      return '0.4.1';
     }
   }]);
 
