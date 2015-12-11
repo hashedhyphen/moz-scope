@@ -10,17 +10,21 @@ Object.defineProperty(exports, "__esModule", {
 
 require('babel-polyfill');
 
+var _generateHelp = require('generate-help');
+
+var _generateHelp2 = _interopRequireDefault(_generateHelp);
+
 var _config = require('./store/config.js');
 
 var _config2 = _interopRequireDefault(_config);
 
-var _table = require('./store/table.js');
-
-var _table2 = _interopRequireDefault(_table);
-
 var _network = require('./net/network.js');
 
 var _network2 = _interopRequireDefault(_network);
+
+var _table = require('./store/table.js');
+
+var _table2 = _interopRequireDefault(_table);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -66,6 +70,27 @@ var MozScope = (function () {
         return ref.apply(this, arguments);
       };
     })()
+  }, {
+    key: 'showHelp',
+    value: function showHelp() {
+      console.log((0, _generateHelp2.default)({
+        usage: 'moz-scope [options]',
+        options: {
+          help: {
+            alias: 'h',
+            desc: 'output usage information'
+          },
+          reset: {
+            alias: 'r',
+            desc: 'reset internal storage (not mozscope.conf)'
+          },
+          version: {
+            alias: 'v',
+            desc: 'output the version number'
+          }
+        }
+      }));
+    }
   }, {
     key: 'showUpdates',
     value: (function () {
@@ -128,7 +153,7 @@ var MozScope = (function () {
   }, {
     key: 'VERSION',
     get: function get() {
-      return '0.3.0';
+      return '0.4.0';
     }
   }]);
 

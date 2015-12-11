@@ -1,13 +1,14 @@
 {
   "name": "moz-scope",
   "description": "Check latest updates on MDN articles",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Hashed Hyphen <hashedhyphen@gmail.com>",
   "bin": {
     "moz-scope": "./bin/router.js"
   },
   "dependencies": {
-    "babel-polyfill": "^6.3.14"
+    "babel-polyfill": "^6.3.14",
+    "generate-help": "^1.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^5.0.0-beta6",
@@ -29,7 +30,7 @@
     "translation"
   ],
   "license": "MIT",
-  "main": "./bin/router.js",
+  "main": "./bin/mozscope.js",
   "preferGlobal": true,
   "repository": {
     "type": "git",

@@ -1,11 +1,12 @@
 import 'babel-polyfill';
+import help    from 'generate-help';
 import Config  from './store/config.js';
-import Table   from './store/table.js';
 import Network from './net/network.js';
+import Table   from './store/table.js';
 
 export default class MozScope {
   static get VERSION() {
-    return `0.3.0`;
+    return `0.4.0`;
   }
 
   static async resetTable() {
@@ -13,6 +14,26 @@ export default class MozScope {
       await Table.reset();
       console.log(`Reseted articles' table`);
     } catch (err) { console.error(err); }
+  }
+
+  static showHelp() {
+    console.log(help({
+      usage: `moz-scope [options]`,
+      options: {
+        help: {
+          alias: `h`,
+          desc:  `output usage information`
+        },
+        reset: {
+          alias: `r`,
+          desc:  `reset internal storage (not mozscope.conf)`
+        },
+        version: {
+          alias: `v`,
+          desc:  `output the version number`
+        }
+      }
+    }));
   }
 
   static async showUpdates() {

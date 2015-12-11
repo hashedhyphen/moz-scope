@@ -27,7 +27,7 @@ $ moz-scope
 ## Options
 
 ```
--h, --help        output usage information
--r, --reset       reset all information about articles (doesn't reset mozscope.conf)
--v, --version     output the version number
+-h, --help     output usage information
+-r, --reset    reset internal storage (not mozscope.conf)
+-v, --version  output the version number
 ```
