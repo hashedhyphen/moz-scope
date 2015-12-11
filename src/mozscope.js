@@ -5,11 +5,14 @@ import Network from './net/network.js';
 
 export default class MozScope {
   static get VERSION() {
-    return `0.2.1`;
+    return `0.3.0`;
   }
 
-  static showVersion() {
-    console.log(MozScope.VERSION);
+  static async resetTable() {
+    try {
+      await Table.reset();
+      console.log(`Reseted articles' table`);
+    } catch (err) { console.error(err); }
   }
 
   static async showUpdates() {
@@ -25,6 +28,10 @@ export default class MozScope {
       logUpdates(updates);
       Table.update(new_table);
     } catch (err) { console.error(err); }
+  }
+
+  static showVersion() {
+    console.log(MozScope.VERSION);
   }
 }
 

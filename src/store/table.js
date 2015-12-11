@@ -7,34 +7,6 @@ export default class Table {
     return path.resolve(dir, '../table.json');
   }
 
-  static read() {
-    return new Promise((resolve, reject) => {
-      fs.readFile(Table.PATH, (err, buf) => {
-        if (err) {
-          if (err.code === `ENOENT`) {
-            return resolve(null);  // create new table
-          }
-          console.error(`failed to read table.json`);
-          return reject(err);
-        }
-        resolve(JSON.parse(buf.toString(`utf8`)));
-      });
-    });
-  }
-
-  static update(table) {
-    return new Promise((resolve, reject) => {
-      const json = JSON.stringify(table, null, 2);
-      fs.writeFile(Table.PATH, json, (err) => {
-        if (err) {
-          console.error(`failed to write table.json`);
-          return reject(err);
-        }
-        resolve(1);
-      });
-    });
-  }
-
   static async diff(states, table) {
     try {
       if (!table) { return [states, states]; }  // create new table
@@ -52,5 +24,50 @@ export default class Table {
       console.error(`error in Table.diff`);
       console.error(err);
     }
+  }
+
+  static read() {
+    return new Promise((resolve, reject) => {
+      fs.readFile(Table.PATH, (err, buf) => {
+        if (err) {
+          if (err.code === `ENOENT`) {
+            return resolve(null);  // create new table
+          }
+          console.error(`failed to read table.json`);
+          return reject(err);
+        }
+
+        if (buf.length === 0) {
+          return resolve(null);  // after reset the table (create new one)
+        }
+
+        resolve(JSON.parse(buf.toString(`utf8`)));
+      });
+    });
+  }
+
+  static reset() {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(Table.PATH, ``, (err) => {
+        if (err) {
+          console.error(`failed to reset table.json`);
+          return reject(err);
+        }
+        resolve(1);
+      });
+    });
+  }
+
+  static update(table) {
+    return new Promise((resolve, reject) => {
+      const json = JSON.stringify(table, null, 2);
+      fs.writeFile(Table.PATH, json, (err) => {
+        if (err) {
+          console.error(`failed to write table.json`);
+          return reject(err);
+        }
+        resolve(1);
+      });
+    });
   }
 }

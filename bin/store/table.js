@@ -26,36 +26,6 @@ var Table = (function () {
   }
 
   _createClass(Table, null, [{
-    key: 'read',
-    value: function read() {
-      return new Promise(function (resolve, reject) {
-        _fs2.default.readFile(Table.PATH, function (err, buf) {
-          if (err) {
-            if (err.code === 'ENOENT') {
-              return resolve(null); // create new table
-            }
-            console.error('failed to read table.json');
-            return reject(err);
-          }
-          resolve(JSON.parse(buf.toString('utf8')));
-        });
-      });
-    }
-  }, {
-    key: 'update',
-    value: function update(table) {
-      return new Promise(function (resolve, reject) {
-        var json = JSON.stringify(table, null, 2);
-        _fs2.default.writeFile(Table.PATH, json, function (err) {
-          if (err) {
-            console.error('failed to write table.json');
-            return reject(err);
-          }
-          resolve(1);
-        });
-      });
-    }
-  }, {
     key: 'diff',
     value: (function () {
       var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(states, table) {
@@ -107,6 +77,54 @@ var Table = (function () {
         return ref.apply(this, arguments);
       };
     })()
+  }, {
+    key: 'read',
+    value: function read() {
+      return new Promise(function (resolve, reject) {
+        _fs2.default.readFile(Table.PATH, function (err, buf) {
+          if (err) {
+            if (err.code === 'ENOENT') {
+              return resolve(null); // create new table
+            }
+            console.error('failed to read table.json');
+            return reject(err);
+          }
+
+          if (buf.length === 0) {
+            return resolve(null); // after reset the table (create new one)
+          }
+
+          resolve(JSON.parse(buf.toString('utf8')));
+        });
+      });
+    }
+  }, {
+    key: 'reset',
+    value: function reset() {
+      return new Promise(function (resolve, reject) {
+        _fs2.default.writeFile(Table.PATH, '', function (err) {
+          if (err) {
+            console.error('failed to reset table.json');
+            return reject(err);
+          }
+          resolve(1);
+        });
+      });
+    }
+  }, {
+    key: 'update',
+    value: function update(table) {
+      return new Promise(function (resolve, reject) {
+        var json = JSON.stringify(table, null, 2);
+        _fs2.default.writeFile(Table.PATH, json, function (err) {
+          if (err) {
+            console.error('failed to write table.json');
+            return reject(err);
+          }
+          resolve(1);
+        });
+      });
+    }
   }, {
     key: 'PATH',
     get: function get() {

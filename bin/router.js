@@ -8,6 +8,10 @@ var _mozscope2 = _interopRequireDefault(_mozscope);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 switch (process.argv[2]) {
+  case '-r':
+  case '--reset':
+    _mozscope2.default.resetTable();
+    break;
   case '-v':
   case '--version':
     _mozscope2.default.showVersion();
