@@ -6,7 +6,7 @@ import Table   from './store/table.js';
 
 export default class MozScope {
   static get VERSION() {
-    return `0.4.1`;
+    return `1.0.0`;
   }
 
   static async resetTable() {

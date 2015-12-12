@@ -153,7 +153,7 @@ var MozScope = (function () {
   }, {
     key: 'VERSION',
     get: function get() {
-      return '0.4.1';
+      return '1.0.0';
     }
   }]);
 
