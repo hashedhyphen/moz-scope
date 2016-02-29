@@ -7,7 +7,7 @@
     "moz-scope": "./bin/router.js"
   },
   "dependencies": {
-    "babel-polyfill": "^6.3.14",
+    "babel-polyfill": "^6.5.0",
     "generate-help": "^1.0.2"
   },
   "devDependencies": {
