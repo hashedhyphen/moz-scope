@@ -1,4 +1,7 @@
 # moz-scope
+
+**DEPRECATED: This repository won't be maintained.**
+
 Check latest updates on MDN articles
 
 ## Installation
